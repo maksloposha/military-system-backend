@@ -69,7 +69,7 @@ application.properties
 
 # IntelliJ generated
 out/
-
+src/main/resources/application.properties
 # Temporary files
 *.swp
 *.tmp
