@@ -7,7 +7,9 @@ import org.example.militarysystem.dto.RegistrationResponse;
 import org.example.militarysystem.exceptions.UserInWrongStatusException;
 import org.example.militarysystem.model.Role;
 import org.example.militarysystem.model.User;
+import org.example.militarysystem.repository.RankRepository;
 import org.example.militarysystem.repository.RoleRepository;
+import org.example.militarysystem.repository.UnitTypeRepository;
 import org.example.militarysystem.repository.UserRepository;
 import org.example.militarysystem.security.jwt.JwtTokenUtil;
 import org.example.militarysystem.utils.userUtils.UserStatus;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,17 +37,21 @@ public class AuthenticationService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RankRepository rankRepository;
+    private final UnitTypeRepository unitTypeRepository;
 
     @Autowired
     public AuthenticationService(AuthenticationManager authenticationManager,
                                  JwtTokenUtil jwtTokenUtil,
-                                 UserDetailsService userDetailsService, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+                                 UserDetailsService userDetailsService, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, RankRepository rankRepository, UnitTypeRepository unitTypeRepository) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenUtil = jwtTokenUtil;
         this.userDetailsService = userDetailsService;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.rankRepository = rankRepository;
+        this.unitTypeRepository = unitTypeRepository;
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) throws Exception {
@@ -62,7 +69,7 @@ public class AuthenticationService {
         final String token = jwtTokenUtil.generateToken(userDetails);
 
         final List<String> roles = userDetails.getAuthorities().stream()
-                .map(authority -> authority.getAuthority())
+                .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
         return new AuthenticationResponse(token, userDetails.getUsername(), roles);
@@ -91,8 +98,8 @@ public class AuthenticationService {
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRank(request.getRank());
-        user.setUnit(request.getUnit());
+        user.setRank(rankRepository.findByName(request.getRank()));
+        user.setUnitType(unitTypeRepository.findByName(request.getUnit()));
 
         user.setStatus(UserStatus.PENDING);
         user.setCreatedAt(LocalDateTime.now());

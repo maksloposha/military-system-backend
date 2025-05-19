@@ -8,4 +8,6 @@ import java.util.List;
 public interface ChatMessageRepository extends MongoRepository<ChatMessage, String> {
 
     List<ChatMessage> findBySenderAndRecipientOrderByTimestamp(String sender, String recipient);
+
+    void deleteBySenderAndRecipient(String sender, String recipient);
 }

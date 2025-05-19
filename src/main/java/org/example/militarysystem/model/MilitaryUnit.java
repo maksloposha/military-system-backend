@@ -24,6 +24,9 @@ public class MilitaryUnit {
     @JoinColumn(name = "commander_id")
     private User commander;
 
+    @OneToOne
+    private MilitaryUnit parentUnit;
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 

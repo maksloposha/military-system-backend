@@ -38,8 +38,8 @@ public class ChatController {
         return ResponseEntity.ok(chats);
     }
 
-    @GetMapping("/deleteChat/{id}")
-    public ResponseEntity<Void> deleteChat(Long id) {
+    @DeleteMapping("/deleteChat/{id}")
+    public ResponseEntity<Void> deleteChat(@PathVariable Long id) {
         chatService.deleteChat(id);
         return ResponseEntity.ok().build();
     }

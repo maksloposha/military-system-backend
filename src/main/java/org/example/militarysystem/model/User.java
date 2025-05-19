@@ -11,7 +11,10 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"username"}),
+        @UniqueConstraint(columnNames = {"email"})
+})
 public class User {
 
     @Id
@@ -39,11 +42,13 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-    @Convert(converter = EncryptedStringAttributeConverter.class)
-    private String rank;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "rank_id")
+    private Rank rank;
 
-    @Convert(converter = EncryptedStringAttributeConverter.class)
-    private String unit;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "unit_id")
+    private UnitType unitType;
 
     @Enumerated(EnumType.STRING)
     private UserStatus status = UserStatus.PENDING;

@@ -3,6 +3,8 @@ package org.example.militarysystem.service;
 import org.example.militarysystem.dto.CommanderDto;
 import org.example.militarysystem.dto.UserDto;
 import org.example.militarysystem.model.User;
+import org.example.militarysystem.repository.RankRepository;
+import org.example.militarysystem.repository.UnitTypeRepository;
 import org.example.militarysystem.repository.UserRepository;
 import org.example.militarysystem.utils.userUtils.UserStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,21 +17,25 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final RankRepository rankRepository;
+    private final UnitTypeRepository unitTypeRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, RankRepository rankRepository, UnitTypeRepository unitTypeRepository) {
         this.userRepository = userRepository;
+        this.rankRepository = rankRepository;
+        this.unitTypeRepository = unitTypeRepository;
     }
 
     public List<UserDto> getAllUsers() {
         return userRepository.findAll().stream()
-                .map(user ->new UserDto(
+                .map(user -> new UserDto(
                         user.getId(),
                         user.getUsername(),
                         user.getEmail(),
                         user.getPassword(),
-                        user.getRank(),
-                        user.getUnit(),
+                        user.getRank() == null ? null : user.getRank().getName(),
+                        user.getUnitType() == null ? null : user.getUnitType().getName(),
                         user.getStatus().name(),
                         user.getRole().getRoleName()
                 ))
@@ -61,8 +67,8 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         user.setUsername(userDto.getUsername());
         user.setEmail(userDto.getEmail());
-        user.setRank(userDto.getRank());
-        user.setUnit(userDto.getUnit());
+        user.setRank(rankRepository.findByName(userDto.getRank()));
+        user.setUnitType(unitTypeRepository.findByName(userDto.getUnit()));
         user.setStatus(UserStatus.valueOf(userDto.getStatus()));
         user = userRepository.save(user);
         return new UserDto(
@@ -70,8 +76,8 @@ public class UserService {
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
-                user.getRank(),
-                user.getUnit(),
+                user.getRank().getName(),
+                user.getUnitType().getName(),
                 user.getStatus().name(),
                 user.getRole().getRoleName()
         );
@@ -85,8 +91,8 @@ public class UserService {
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
-                user.getRank(),
-                user.getUnit(),
+                user.getRank().getName(),
+                user.getUnitType().getName(),
                 user.getStatus().name(),
                 user.getRole().getRoleName()
         );

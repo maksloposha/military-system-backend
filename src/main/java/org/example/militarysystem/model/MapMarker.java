@@ -5,10 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.example.militarysystem.utils.mapUtils.MarkerType;
 import org.example.militarysystem.utils.mapUtils.UnitType;
-import org.hibernate.annotations.JdbcTypeCode;
 import org.locationtech.jts.geom.Point;
 
-import java.sql.Types;
 
 @Getter
 @Setter

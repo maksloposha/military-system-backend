@@ -6,7 +6,6 @@ import org.example.militarysystem.chat.entity.Chat;
 import org.example.militarysystem.chat.entity.ChatMessage;
 import org.example.militarysystem.chat.repository.ChatMessageRepository;
 import org.example.militarysystem.chat.repository.ChatRepository;
-import org.example.militarysystem.dto.UserDto;
 import org.example.militarysystem.model.User;
 import org.example.militarysystem.repository.UserRepository;
 import org.example.militarysystem.service.ProfileService;
@@ -47,6 +46,13 @@ public class ChatService {
     }
 
     public void deleteChat(Long id) {
+        Optional<Chat> chat = chatRepository.findById(id);
+        if (chat.isEmpty()) {
+            throw new RuntimeException("Chat not found");
+        } else {
+            chatMessageRepository.deleteBySenderAndRecipient(chat.get().getParticipants().get(0).getUsername(), chat.get().getParticipants().get(1).getUsername());
+            chatMessageRepository.deleteBySenderAndRecipient(chat.get().getParticipants().get(1).getUsername(), chat.get().getParticipants().get(0).getUsername());
+        }
         chatRepository.deleteById(id);
     }
 

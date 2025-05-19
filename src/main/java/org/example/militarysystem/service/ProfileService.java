@@ -29,8 +29,8 @@ public class ProfileService {
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
-                user.getRank(),
-                user.getUnit(),
+                user.getRank() == null ? null : user.getRank().getName(),
+                user.getUnitType() == null ? null : user.getUnitType().getName(),
                 user.getStatus().name(),
                 user.getRole().getRoleName()
         );
@@ -51,7 +51,7 @@ public class ProfileService {
         String username = getUsernameFromToken();
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        if(!Objects.equals(user.getId(), userDto.getId())) {
+        if (!Objects.equals(user.getId(), userDto.getId())) {
             throw new RuntimeException("You can only update your own profile");
         }
         user.setUsername(userDto.getUsername());
@@ -63,8 +63,8 @@ public class ProfileService {
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
-                user.getRank(),
-                user.getUnit(),
+                user.getRank().getName(),
+                user.getUnitType().getName(),
                 user.getStatus().name(),
                 user.getRole().getRoleName()
         );
