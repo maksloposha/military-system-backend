@@ -18,8 +18,8 @@ public class MarkerSocketService {
     }
 
     public void sendMarkers() {
-        // Send the message to the specific marker topic
-        List<MapMarkerDTO> allMarkers = markerService.getAllMarkers(); // або інший метод
+
+        List<MapMarkerDTO> allMarkers = markerService.getAllMarkers();
         messagingTemplate.convertAndSend("/topic/markers", new MarkerEvent("SYNC_ALL", allMarkers));
     }
 }

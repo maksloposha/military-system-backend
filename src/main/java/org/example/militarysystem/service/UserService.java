@@ -92,7 +92,7 @@ public class UserService {
                 user.getEmail(),
                 user.getPassword(),
                 user.getRank().getName(),
-                user.getUnitType().getName(),
+                user.getUnitType() != null ? user.getUnitType().getName() : null,
                 user.getStatus().name(),
                 user.getRole().getRoleName()
         );

@@ -14,5 +14,5 @@ public class ZoneDto {
     private Long id;
     private String name;
     private ZoneType type;
-    private List<List<Double>> coordinates; // [ [lng, lat], [lng, lat], ... ]
+    private List<List<Double>> coordinates;
 }

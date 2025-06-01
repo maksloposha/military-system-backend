@@ -27,7 +27,7 @@ public class ChatMessageController {
         chatService.saveMessage(message);
 
         message.setContent(message.getEncryptedForRecipient());
-        // Надіслати повідомлення одержувачу
+
         messagingTemplate.convertAndSendToUser(
                 message.getRecipient(),
                 "/queue/messages",

@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.militarysystem.utils.mapUtils.MarkerType;
-import org.example.militarysystem.utils.mapUtils.UnitType;
 import org.locationtech.jts.geom.Point;
 
 
@@ -27,10 +26,15 @@ public class MapMarker {
     @Column(columnDefinition = "geometry(Point, 4326)")
     private Point location;
 
-    @Enumerated(EnumType.STRING)
+    @ManyToOne
+    @JoinColumn(name = "unit_type_id")
     private UnitType unitType;
 
     private String commander;
 
     private Integer estimatedPersonnel;
+
+    @ManyToOne
+    @JoinColumn(name = "position_status_id", nullable = true)
+    private PositionStatus positionStatus;
 }

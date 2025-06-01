@@ -3,7 +3,6 @@ package org.example.militarysystem.controller;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.militarysystem.dto.AuthenticationRequest;
-import org.example.militarysystem.dto.AuthenticationResponse;
 import org.example.militarysystem.dto.RegistrationRequest;
 import org.example.militarysystem.dto.RegistrationResponse;
 import org.example.militarysystem.exceptions.UserInWrongStatusException;

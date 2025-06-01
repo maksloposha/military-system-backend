@@ -31,21 +31,21 @@ public class MapMarkerController {
     @PostMapping
     public ResponseEntity<MapMarkerDTO> createMarker(@RequestBody MapMarkerDTO dto) {
         MapMarkerDTO marker = service.createMarker(dto);
-        markerSocketService.sendMarkers(); // Notify WebSocket clients about the new marker
+        markerSocketService.sendMarkers();
         return new ResponseEntity<>(marker, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMarker(@PathVariable Long id) {
         service.deleteMarker(id);
-        markerSocketService.sendMarkers(); // Notify WebSocket clients about the deletion
+        markerSocketService.sendMarkers();
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<MapMarkerDTO> updateMarker(@PathVariable Long id, @RequestBody MapMarkerDTO dto) {
         MapMarkerDTO updatedMarker = service.updateMarker(id, dto);
-        markerSocketService.sendMarkers(); // Notify WebSocket clients about the update
+        markerSocketService.sendMarkers();
         return ResponseEntity.ok(updatedMarker);
     }
 }

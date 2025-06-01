@@ -17,7 +17,6 @@ public class PublicKeyEntity {
     private String username;
 
     @Column(length = 2048, nullable = false)
-    private String publicKeyJwk; // збережемо у форматі JWK (JSON Web Key)
+    private String publicKeyJwk;
 
-    // Constructors, getters, setters
 }
