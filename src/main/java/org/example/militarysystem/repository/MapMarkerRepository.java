@@ -10,4 +10,7 @@ import java.util.List;
 public interface MapMarkerRepository extends JpaRepository<MapMarker, Long> {
     @Transactional
     List<MapMarker> findByPositionStatus(PositionStatus positionStatus);
+
+    @Transactional
+    void deleteByUnitTypeId(Long id);
 }

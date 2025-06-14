@@ -53,6 +53,7 @@ public class UserSettingService {
     }
 
     public void deleteUnitType(Long id) {
+        mapMarkerRepository.deleteByUnitTypeId(id);
         unitTypeRepository.deleteById(id);
     }
 
