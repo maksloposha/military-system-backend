@@ -27,9 +27,7 @@ public class MilitaryUnit {
     @OneToOne
     private MilitaryUnit parentUnit;
 
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    @Column(nullable = false)
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    @ManyToOne
+    @JoinColumn(name = "military_formation_id", nullable = false)
+    private MilitaryFormation militaryFormation;
 }

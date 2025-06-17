@@ -63,8 +63,8 @@ public class ProfileService {
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
-                user.getRank().getName(),
-                user.getUnitType().getName(),
+                user.getRank() != null ? user.getRank().getName() : null,
+                user.getRank() != null ? user.getUnitType().getName() : null,
                 user.getStatus().name(),
                 user.getRole().getRoleName()
         );
